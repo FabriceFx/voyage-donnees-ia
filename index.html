@@ -1,379 +1,486 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowRight, Lock, Database, Brain, FileText, AlertTriangle, ShieldCheck, RefreshCw, Send, Eye, XCircle, CheckCircle } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voyage de la Donnée IA</title>
+    <!-- Tailwind CSS pour le style (via CDN pour ne rien installer) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icons Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Animations personnalisées */
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fade-in-up 0.5s ease-out forwards;
+        }
+        .token-badge {
+            transition: all 0.3s ease;
+        }
+        .token-badge:hover {
+            transform: scale(1.1);
+        }
+        .step-content {
+            display: none;
+        }
+        .step-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
 
-const Slide = ({ children, isActive }) => {
-  if (!isActive) return null;
-  return (
-    <div className="animate-fade-in-up w-full max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-lg border border-slate-200 min-h-[500px] flex flex-col relative overflow-hidden">
-      {children}
-    </div>
-  );
-};
-
-const TokenBadge = ({ text, id }) => (
-  <div className="flex flex-col items-center mx-1 mb-2 animate-bounce-short" style={{ animationDelay: `${id * 100}ms` }}>
-    <span className="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-lg text-sm font-mono border border-indigo-200 shadow-sm">{text}</span>
-    <span className="text-xs text-slate-400 mt-1">{Math.floor(Math.random() * 9000) + 1000}</span>
-  </div>
-);
-
-const ProgressBar = ({ current, total }) => (
-  <div className="w-full bg-slate-100 h-2 rounded-full mt-8 mb-4 overflow-hidden">
-    <div 
-      className="bg-indigo-600 h-full transition-all duration-500 ease-out"
-      style={{ width: `${((current + 1) / total) * 100}%` }}
-    />
-  </div>
-);
-
-const App = () => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [inputText, setInputText] = useState("");
-  const [isProcessing, setIsProcessing] = useState(false);
-  
-  const steps = [
-    { title: "Introduction", id: "intro" },
-    { title: "L'Entrée (Prompt)", id: "input" },
-    { title: "La Traduction (Tokenisation)", id: "token" },
-    { title: "Le Traitement (Le Mythe)", id: "model" },
-    { title: "La Sécurité des Données", id: "security" },
-    { title: "Conclusion", id: "summary" }
-  ];
-
-  const handleNext = () => {
-    if (currentStep < steps.length - 1) setCurrentStep(c => c + 1);
-  };
-
-  const handlePrev = () => {
-    if (currentStep > 0) setCurrentStep(c => c - 1);
-  };
-
-  // Step Specific Logic
-  const sampleInput = "Bonjour, analyse ce dossier confidentiel.";
-  const tokens = sampleInput.split(' ');
-
-  return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-indigo-100 p-4 md:p-8">
-      <div className="max-w-5xl mx-auto">
+    <div class="max-w-5xl mx-auto w-full p-4 md:p-8 flex-grow flex flex-col">
         
-        {/* Header */}
-        <header className="mb-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
-            Voyage d'une Donnée dans l'IA
-          </h1>
-          <p className="text-slate-500 text-lg">
-            Comprendre le trajet, le traitement et la sécurité de vos informations.
-          </p>
+        <!-- Header -->
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
+                Voyage d'une Donnée dans l'IA
+            </h1>
+            <p class="text-slate-500 text-lg">
+                Du prompt à la réponse : démystifier le traitement et les filtres.
+            </p>
         </header>
 
-        {/* Main Content Area */}
-        <div className="mb-8">
-          
-          {/* STEP 0: INTRO */}
-          <Slide isActive={currentStep === 0}>
-            <div className="flex flex-col items-center justify-center h-full text-center space-y-6 pt-10">
-              <div className="bg-indigo-50 p-6 rounded-full">
-                <Brain size={64} className="text-indigo-600" />
-              </div>
-              <h2 className="text-2xl font-bold">Le Mythe du "Copier-Coller"</h2>
-              <p className="text-lg text-slate-600 max-w-2xl">
-                Beaucoup pensent que l'IA stocke vos documents dans une immense bibliothèque et les ressort tels quels.
-                <br/><br/>
-                La réalité est différente : l'IA fonctionne plus comme un <span className="font-semibold text-indigo-600">chef cuisinier</span> qui invente une recette, plutôt que comme une <span className="font-semibold text-indigo-600">photocopieuse</span>.
-              </p>
-              <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg flex items-start text-left max-w-xl">
-                <AlertTriangle className="text-yellow-600 mr-3 flex-shrink-0 mt-1" size={20} />
-                <p className="text-sm text-yellow-800">
-                  <strong>Enjeu critique :</strong> Si je donne des données sensibles (noms, dossiers médicaux) à l'IA, sont-elles aspirées pour toujours ? C'est ce que nous allons voir.
-                </p>
-              </div>
-              <button onClick={handleNext} className="mt-8 bg-indigo-600 text-white px-8 py-3 rounded-full hover:bg-indigo-700 transition flex items-center shadow-lg font-medium">
-                Commencer la démonstration <ArrowRight className="ml-2" size={20} />
-              </button>
-            </div>
-          </Slide>
-
-          {/* STEP 1: INPUT */}
-          <Slide isActive={currentStep === 1}>
-            <h2 className="text-2xl font-bold mb-6 flex items-center">
-              1. L'Envoi du Prompt
-            </h2>
-            <div className="grid md:grid-cols-2 gap-8 h-full">
-              <div className="space-y-4">
-                <p className="text-slate-600">
-                  Tout commence quand vous tapez votre demande ou chargez un document.
-                </p>
-                <div className="bg-white border-2 border-slate-200 rounded-xl p-4 shadow-sm relative">
-                  <label className="text-xs font-bold text-slate-400 uppercase mb-2 block">Interface Utilisateur</label>
-                  <div className="bg-slate-50 p-3 rounded-lg text-slate-500 italic mb-2 min-h-[60px]">
-                    {inputText || "Entrez votre prompt ici..."}
-                  </div>
-                  <div className="flex gap-2">
-                    <button 
-                      onClick={() => setInputText(sampleInput)} 
-                      className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded hover:bg-indigo-200 transition"
-                    >
-                      Exemple : Données Sensibles
-                    </button>
-                    <button 
-                      onClick={() => setInputText("")} 
-                      className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded hover:bg-slate-200 transition"
-                    >
-                      Effacer
-                    </button>
-                  </div>
-                </div>
-                <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 text-sm text-blue-800">
-                  <p><strong>Note :</strong> À ce stade, le texte est encore lisible. Il transite via Internet (chiffré en HTTPS) vers les serveurs du fournisseur d'IA.</p>
-                </div>
-              </div>
-              
-              <div className="flex flex-col items-center justify-center bg-slate-50 rounded-xl border border-dashed border-slate-300 p-6">
-                {inputText ? (
-                  <div className="animate-pulse flex flex-col items-center text-center">
-                    <FileText size={48} className="text-indigo-500 mb-2" />
-                    <span className="font-bold text-slate-700">Paquet de données</span>
-                    <span className="text-xs text-slate-500 mt-1">Chiffré en transit (TLS)</span>
-                    <ArrowRight className="rotate-90 md:rotate-0 text-slate-400 mt-4" size={32} />
-                  </div>
-                ) : (
-                  <p className="text-slate-400 text-center italic">En attente d'une entrée...</p>
-                )}
-              </div>
-            </div>
-          </Slide>
-
-          {/* STEP 2: TOKENIZATION */}
-          <Slide isActive={currentStep === 2}>
-            <h2 className="text-2xl font-bold mb-6 flex items-center">
-              2. La "Digestion" (Tokenisation)
-            </h2>
-            <div className="space-y-6">
-              <p className="text-slate-600">
-                L'IA ne lit pas le français. Elle ne comprend pas le sens des mots comme nous. 
-                Dès l'arrivée sur le serveur, votre texte est découpé en morceaux appelés <strong>Tokens</strong> et converti en vecteurs numériques.
-              </p>
-              
-              <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-inner text-center">
-                <p className="text-sm text-slate-400 mb-4 uppercase tracking-wider">Transformation en temps réel</p>
-                
-                <div className="flex flex-wrap justify-center items-center gap-2 mb-8">
-                  <span className="text-xl font-medium text-slate-800">"{sampleInput}"</span>
-                </div>
-                
-                <div className="flex justify-center my-4">
-                   <ArrowRight className="text-indigo-400 rotate-90" size={32} />
-                </div>
-
-                <div className="flex flex-wrap justify-center gap-2">
-                  {tokens.map((word, idx) => (
-                    <TokenBadge key={idx} id={idx} text={word} />
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-indigo-50 p-4 rounded-lg flex items-start">
-                 <Eye className="text-indigo-600 mt-1 mr-3 flex-shrink-0" size={20} />
-                 <div>
-                   <h4 className="font-bold text-indigo-900 text-sm">Ce que voit la machine</h4>
-                   <p className="text-indigo-800 text-sm mt-1">
-                     Pour le modèle, votre dossier confidentiel n'est qu'une suite de coordonnées mathématiques dans un espace géant. Elle ne "lit" pas le dossier, elle analyse la position des nombres.
-                   </p>
-                 </div>
-              </div>
-            </div>
-          </Slide>
-
-          {/* STEP 3: THE MODEL (NO COPY PASTE) */}
-          <Slide isActive={currentStep === 3}>
-            <h2 className="text-2xl font-bold mb-4 flex items-center">
-              3. Le Traitement : Prédiction vs Copie
-            </h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* The Myth */}
-              <div className="opacity-50 grayscale transition hover:grayscale-0 hover:opacity-100 duration-300">
-                <div className="border-2 border-red-100 bg-red-50 rounded-xl p-4 h-full relative overflow-hidden">
-                  <div className="absolute top-2 right-2 bg-red-100 text-red-600 text-xs px-2 py-1 rounded font-bold">LE MYTHE</div>
-                  <h3 className="font-bold text-red-800 mb-2 flex items-center"><Database className="mr-2" size={18}/> La Bibliothèque</h3>
-                  <p className="text-sm text-slate-600 mb-4">
-                    L'idée fausse : L'IA cherche votre phrase dans une base de données géante et la copie.
-                  </p>
-                  <div className="bg-white p-3 rounded border border-red-200 text-xs font-mono text-slate-400">
-                    SELECT * FROM data WHERE text LIKE '%dossier%'
-                  </div>
-                  <XCircle className="absolute bottom-4 right-4 text-red-300" size={48} />
-                </div>
-              </div>
-
-              {/* The Reality */}
-              <div>
-                <div className="border-2 border-green-100 bg-green-50 rounded-xl p-4 h-full relative shadow-md">
-                   <div className="absolute top-2 right-2 bg-green-100 text-green-700 text-xs px-2 py-1 rounded font-bold">LA RÉALITÉ</div>
-                   <h3 className="font-bold text-green-800 mb-2 flex items-center"><Brain className="mr-2" size={18}/> Le Moteur Statistique</h3>
-                   <p className="text-sm text-slate-600 mb-4">
-                     L'IA calcule le mot suivant le plus probable en fonction de ses "poids" (son entraînement). Elle <strong>génère</strong> du nouveau contenu.
-                   </p>
-                   
-                   {/* Interactive Prediction Visualization */}
-                   <div className="bg-white p-3 rounded border border-green-200 shadow-sm">
-                      <div className="text-sm mb-2 text-slate-500">Contexte: "Le ciel est..."</div>
-                      <div className="space-y-2">
-                        <div className="flex items-center text-xs">
-                          <span className="w-16 font-semibold">Bleu</span>
-                          <div className="flex-1 bg-slate-100 rounded-full h-2 mx-2">
-                             <div className="bg-green-500 h-2 rounded-full w-[85%]"></div>
-                          </div>
-                          <span className="text-slate-400">85%</span>
-                        </div>
-                        <div className="flex items-center text-xs">
-                          <span className="w-16">Gris</span>
-                          <div className="flex-1 bg-slate-100 rounded-full h-2 mx-2">
-                             <div className="bg-green-300 h-2 rounded-full w-[10%]"></div>
-                          </div>
-                          <span className="text-slate-400">10%</span>
-                        </div>
-                         <div className="flex items-center text-xs">
-                          <span className="w-16">Vert</span>
-                          <div className="flex-1 bg-slate-100 rounded-full h-2 mx-2">
-                             <div className="bg-green-200 h-2 rounded-full w-[1%]"></div>
-                          </div>
-                          <span className="text-slate-400">1%</span>
-                        </div>
-                      </div>
-                   </div>
-                </div>
-              </div>
-            </div>
-            <p className="mt-6 text-sm text-slate-500 italic text-center">
-              Le LLM ne "connaît" pas les faits, il connaît la probabilité que des mots apparaissent ensemble. C'est pourquoi il peut inventer (halluciner) des faits avec beaucoup d'assurance.
-            </p>
-          </Slide>
-
-          {/* STEP 4: SECURITY */}
-          <Slide isActive={currentStep === 4}>
-            <h2 className="text-2xl font-bold mb-4">
-              4. La Question Critique : Où vont mes données ?
-            </h2>
-            <p className="text-slate-600 mb-6">
-              C'est ici que se joue la confiance. Il y a deux modes d'utilisation très différents.
-            </p>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Public Mode */}
-              <div className="border border-orange-200 rounded-xl p-5 bg-orange-50/50">
-                <div className="flex items-center mb-3 text-orange-700">
-                  <AlertTriangle className="mr-2" />
-                  <h3 className="font-bold">IA Publique / Gratuite</h3>
-                </div>
-                <ul className="text-sm space-y-3 text-slate-700">
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span><strong>Stockage :</strong> Les conversations sont souvent conservées par défaut.</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span><strong>Entraînement :</strong> Vos données peuvent être utilisées pour entraîner les futures versions du modèle.</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span><strong>Risque :</strong> Si vous entrez un secret, l'IA pourrait "apprendre" ce secret et le recracher par hasard à un autre utilisateur dans 6 mois.</span>
-                  </li>
-                </ul>
-                <div className="mt-4 bg-orange-100 text-orange-800 text-xs p-2 rounded text-center font-bold">
-                  NE PAS METTRE DE DONNÉES SENSIBLES
-                </div>
-              </div>
-
-              {/* Private Mode */}
-              <div className="border border-indigo-200 rounded-xl p-5 bg-indigo-50/50">
-                <div className="flex items-center mb-3 text-indigo-700">
-                  <ShieldCheck className="mr-2" />
-                  <h3 className="font-bold">IA Entreprise / API Privée</h3>
-                </div>
-                <ul className="text-sm space-y-3 text-slate-700">
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span><strong>Éphémère :</strong> Les données sont traitées dans la RAM du serveur puis oubliées (Stateless).</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span><strong>Pas d'entraînement :</strong> Le contrat garantit (Zero Data Retention policy) que vos données ne nourrissent pas le modèle global.</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span><strong>Isolement :</strong> Votre "espace de discussion" est étanche.</span>
-                  </li>
-                </ul>
-                 <div className="mt-4 bg-indigo-100 text-indigo-800 text-xs p-2 rounded text-center font-bold">
-                  ADAPTÉ AU SERVICE PUBLIC (Sous contrat)
-                </div>
-              </div>
-            </div>
-          </Slide>
-
-           {/* STEP 5: SUMMARY */}
-           <Slide isActive={currentStep === 5}>
-            <div className="flex flex-col items-center justify-center h-full text-center">
-              <div className="bg-green-100 p-4 rounded-full mb-6">
-                <CheckCircle size={48} className="text-green-600" />
-              </div>
-              <h2 className="text-3xl font-bold mb-6 text-slate-800">En Résumé</h2>
-              
-              <div className="grid gap-4 w-full max-w-2xl text-left">
-                <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-200 flex items-center">
-                  <div className="bg-slate-100 p-2 rounded-full mr-4 text-lg font-bold text-slate-500">1</div>
-                  <p>L'IA ne stocke pas vos textes comme des fichiers Word, elle les transforme en <strong>mathématiques</strong>.</p>
-                </div>
-                <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-200 flex items-center">
-                  <div className="bg-slate-100 p-2 rounded-full mr-4 text-lg font-bold text-slate-500">2</div>
-                  <p>Elle ne fait pas de copier-coller, elle <strong>calcule des probabilités</strong> pour générer une réponse nouvelle.</p>
-                </div>
-                <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-200 flex items-center">
-                  <div className="bg-slate-100 p-2 rounded-full mr-4 text-lg font-bold text-slate-500">3</div>
-                  <p>Le risque de fuite dépend du <strong>contrat</strong> (Gratuit vs Entreprise), pas de la magie de la technologie.</p>
-                </div>
-              </div>
-
-              <button onClick={() => setCurrentStep(0)} className="mt-10 text-indigo-600 font-medium hover:text-indigo-800 flex items-center">
-                <RefreshCw size={16} className="mr-2" /> Recommencer la présentation
-              </button>
-            </div>
-          </Slide>
-
-        </div>
-
-        {/* Navigation Bar */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 shadow-lg z-10">
-          <div className="max-w-5xl mx-auto flex items-center justify-between">
-            <button 
-              onClick={handlePrev} 
-              disabled={currentStep === 0}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition ${currentStep === 0 ? 'text-slate-300 cursor-not-allowed' : 'text-slate-600 hover:bg-slate-100'}`}
-            >
-              Précédent
-            </button>
+        <!-- Main Card Area -->
+        <div class="relative w-full max-w-4xl mx-auto bg-white rounded-xl shadow-lg border border-slate-200 min-h-[600px] flex flex-col overflow-hidden mb-24">
             
-            <div className="flex flex-col items-center w-1/2 md:w-2/3 mx-4">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1 hidden md:block">
-                {steps[currentStep].title}
-              </span>
-              <ProgressBar current={currentStep} total={steps.length} />
+            <!-- STEP 0: INTRO -->
+            <div id="step-0" class="step-content active p-8 h-full">
+                <div class="flex flex-col items-center justify-center h-full text-center space-y-6 pt-10">
+                    <div class="bg-indigo-50 p-6 rounded-full">
+                        <i data-lucide="brain" class="w-16 h-16 text-indigo-600"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold">Le Mythe du "Copier-Coller"</h2>
+                    <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                        Beaucoup pensent que l'IA comprend, réfléchit et copie des données.
+                        <br><br>
+                        En réalité, c'est une machine à statistiques, encadrée par des filtres rigides. Elle ne "sait" pas, elle calcule.
+                    </p>
+                    <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg flex items-start text-left max-w-xl mx-auto">
+                        <i data-lucide="alert-triangle" class="w-5 h-5 text-yellow-600 mr-3 flex-shrink-0 mt-1"></i>
+                        <p class="text-sm text-yellow-800">
+                            <strong>Objectif :</strong> Comprendre pourquoi l'IA refuse certaines demandes (le filtre) et où vont réellement vos données (la sécurité).
+                        </p>
+                    </div>
+                    <button onclick="goToStep(1)" class="mt-8 bg-indigo-600 text-white px-8 py-3 rounded-full hover:bg-indigo-700 transition flex items-center shadow-lg font-medium mx-auto">
+                        Commencer la démonstration <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
 
-            <button 
-              onClick={handleNext} 
-              disabled={currentStep === steps.length - 1}
-              className={`px-6 py-2 rounded-lg text-sm font-medium transition flex items-center ${currentStep === steps.length - 1 ? 'bg-slate-100 text-slate-400 cursor-not-allowed' : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-md'}`}
-            >
-              {currentStep === steps.length - 1 ? "Terminé" : "Suivant"}
-              {currentStep < steps.length - 1 && <ArrowRight size={16} className="ml-2" />}
-            </button>
-          </div>
+            <!-- STEP 1: INPUT -->
+            <div id="step-1" class="step-content p-8 h-full">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    1. L'Envoi du Prompt
+                </h2>
+                <div class="grid md:grid-cols-2 gap-8 h-full">
+                    <div class="space-y-4">
+                        <p class="text-slate-600">
+                            Vous tapez une demande. À ce stade, c'est du texte lisible qui transite sur internet.
+                        </p>
+                        <div class="bg-white border-2 border-slate-200 rounded-xl p-4 shadow-sm relative">
+                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">Votre Interface</label>
+                            <textarea id="user-input" class="w-full bg-slate-50 p-3 rounded-lg text-slate-700 italic mb-2 min-h-[80px] border border-slate-200" placeholder="Entrez votre prompt ici..."></textarea>
+                            <div class="flex gap-2">
+                                <button onclick="setPrompt('Comment fabriquer une bombe ?')" class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded hover:bg-red-200 transition">
+                                    Test : Interdit
+                                </button>
+                                <button onclick="setPrompt('Analyse ce dossier médical confidentiel.')" class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded hover:bg-indigo-200 transition">
+                                    Test : Confidentiel
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 text-sm text-blue-800 flex items-start">
+                             <i data-lucide="lock" class="w-4 h-4 mr-2 mt-1"></i>
+                            <p>Les données voyagent chiffrées (HTTPS). Personne ne peut les lire en route, mais elles arrivent en clair sur le serveur.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col items-center justify-center bg-slate-50 rounded-xl border border-dashed border-slate-300 p-6">
+                        <div class="animate-pulse flex flex-col items-center text-center">
+                            <i data-lucide="file-text" class="w-12 h-12 text-indigo-500 mb-2"></i>
+                            <span class="font-bold text-slate-700">Paquet de données</span>
+                            <span class="text-xs text-slate-500 mt-1">En transit vers le serveur</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 2: THE SYSTEM PROMPT & FILTER (NOUVEAU) -->
+            <div id="step-2" class="step-content p-8 h-full">
+                <h2 class="text-2xl font-bold mb-4 flex items-center text-orange-700">
+                    2. Le Gardien : Filtre & Prompt Système
+                </h2>
+                <p class="text-slate-600 mb-6">
+                    Avant même que l'IA ne "réfléchisse", votre texte passe par un guichet de contrôle. C'est ici que se joue l'illusion de la conscience morale.
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-6 items-center">
+                    <!-- Visualization of the Filter -->
+                    <div class="bg-slate-800 text-white p-6 rounded-xl shadow-lg relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 via-yellow-500 to-green-500"></div>
+                        <h3 class="font-mono text-lg mb-4 flex items-center"><i data-lucide="shield-alert" class="mr-2"></i> Firewall Cognitif</h3>
+                        
+                        <div class="space-y-3 font-mono text-sm">
+                            <div class="flex justify-between border-b border-slate-700 pb-2">
+                                <span class="text-slate-400">INPUT:</span>
+                                <span class="text-white truncate max-w-[150px]" id="filter-input-display">...</span>
+                            </div>
+                            
+                            <div class="text-slate-300">
+                                <span class="text-purple-400">SYSTEM PROMPT:</span><br>
+                                "Tu es un assistant utile. Tu ne dois JAMAIS aider à des activités illégales ou dangereuses."
+                            </div>
+
+                            <div class="bg-slate-900 p-2 rounded border border-slate-700 mt-2">
+                                <span class="text-green-400">> SCANNING KEYWORDS...</span><br>
+                                <span id="scan-result" class="text-yellow-400 animate-pulse">Analyse en cours...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Explanation -->
+                    <div class="space-y-4">
+                         <div class="bg-orange-50 border-l-4 border-orange-500 p-4">
+                            <h4 class="font-bold text-orange-900">L'illusion de compréhension</h4>
+                            <p class="text-sm text-orange-800 mt-1">
+                                Si l'IA refuse de répondre (ex: bombe), ce n'est pas parce qu'elle est "choquée". C'est parce qu'un filtre automatique (comme un antivirus) a détecté un mot interdit.
+                            </p>
+                        </div>
+                        <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4">
+                            <h4 class="font-bold text-indigo-900">Le Prompt Système</h4>
+                            <p class="text-sm text-indigo-800 mt-1">
+                                C'est une instruction invisible ajoutée avant votre message : <em>"Réponds poliment"</em>, <em>"Sois concis"</em>. L'IA obéit à ce chef invisible autant qu'à vous.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 3: TOKENIZATION -->
+            <div id="step-3" class="step-content p-8 h-full">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    3. La "Digestion" (Tokenisation)
+                </h2>
+                <div class="space-y-6">
+                    <p class="text-slate-600">
+                        Si le filtre laisse passer le message, l'IA ne lit toujours pas le français. Elle découpe le texte en morceaux (Tokens) et les convertit en chiffres.
+                    </p>
+                    
+                    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-inner text-center">
+                        <p class="text-sm text-slate-400 mb-4 uppercase tracking-wider">Transformation en Mathématiques</p>
+                        
+                        <div class="flex flex-wrap justify-center items-center gap-2 mb-8">
+                            <span id="token-input-display" class="text-xl font-medium text-slate-800">"..."</span>
+                        </div>
+                        
+                        <div class="flex justify-center my-4">
+                            <i data-lucide="arrow-down" class="text-indigo-400 w-8 h-8"></i>
+                        </div>
+
+                        <div id="token-container" class="flex flex-wrap justify-center gap-2">
+                            <!-- Tokens injected via JS -->
+                        </div>
+                    </div>
+
+                    <div class="bg-indigo-50 p-4 rounded-lg flex items-start">
+                         <i data-lucide="eye" class="w-5 h-5 text-indigo-600 mt-1 mr-3 flex-shrink-0"></i>
+                         <div>
+                           <h4 class="font-bold text-indigo-900 text-sm">Ce que voit la machine</h4>
+                           <p class="text-indigo-800 text-sm mt-1">
+                             Pour le modèle, votre dossier confidentiel n'est qu'une suite de coordonnées vectorielles [1204, 4599, 0021]. Le sens humain disparaît au profit de relations statistiques.
+                           </p>
+                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 4: PREDICTION -->
+            <div id="step-4" class="step-content p-8 h-full">
+                <h2 class="text-2xl font-bold mb-4 flex items-center">
+                    4. Le Moteur : Prédiction vs Copie
+                </h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- The Myth -->
+                    <div class="opacity-50 hover:opacity-100 transition duration-300">
+                        <div class="border-2 border-red-100 bg-red-50 rounded-xl p-4 h-full relative overflow-hidden">
+                            <div class="absolute top-2 right-2 bg-red-100 text-red-600 text-xs px-2 py-1 rounded font-bold">LE MYTHE</div>
+                            <h3 class="font-bold text-red-800 mb-2 flex items-center"><i data-lucide="database" class="mr-2 w-4 h-4"></i> La Bibliothèque</h3>
+                            <p class="text-sm text-slate-600 mb-4">
+                                L'idée fausse : L'IA cherche votre phrase dans une base de données géante et la copie.
+                            </p>
+                            <div class="bg-white p-3 rounded border border-red-200 text-xs font-mono text-slate-400">
+                                SELECT * FROM internet WHERE text LIKE '%votre question%'
+                            </div>
+                            <i data-lucide="x-circle" class="absolute bottom-4 right-4 text-red-300 w-12 h-12"></i>
+                        </div>
+                    </div>
+
+                    <!-- The Reality -->
+                    <div>
+                        <div class="border-2 border-green-100 bg-green-50 rounded-xl p-4 h-full relative shadow-md">
+                           <div class="absolute top-2 right-2 bg-green-100 text-green-700 text-xs px-2 py-1 rounded font-bold">LA RÉALITÉ</div>
+                           <h3 class="font-bold text-green-800 mb-2 flex items-center"><i data-lucide="brain-circuit" class="mr-2 w-4 h-4"></i> Le Chef Cuisinier</h3>
+                           <p class="text-sm text-slate-600 mb-4">
+                             L'IA calcule le mot suivant le plus probable. Elle <strong>invente</strong> la suite.
+                           </p>
+                           
+                           <!-- Interactive Prediction Visualization -->
+                           <div class="bg-white p-3 rounded border border-green-200 shadow-sm">
+                              <div class="text-sm mb-2 text-slate-500">Exemple: "Le chat mange la..."</div>
+                              <div class="space-y-2">
+                                <div class="flex items-center text-xs">
+                                  <span class="w-16 font-semibold">Souris</span>
+                                  <div class="flex-1 bg-slate-100 rounded-full h-2 mx-2">
+                                     <div class="bg-green-500 h-2 rounded-full w-[85%]"></div>
+                                  </div>
+                                  <span class="text-slate-400">85%</span>
+                                </div>
+                                <div class="flex items-center text-xs">
+                                  <span class="w-16">Pâtée</span>
+                                  <div class="flex-1 bg-slate-100 rounded-full h-2 mx-2">
+                                     <div class="bg-green-300 h-2 rounded-full w-[10%]"></div>
+                                  </div>
+                                  <span class="text-slate-400">10%</span>
+                                </div>
+                                 <div class="flex items-center text-xs">
+                                  <span class="w-16">Pizza</span>
+                                  <div class="flex-1 bg-slate-100 rounded-full h-2 mx-2">
+                                     <div class="bg-green-200 h-2 rounded-full w-[1%]"></div>
+                                  </div>
+                                  <span class="text-slate-400">1% (Hallucination)</span>
+                                </div>
+                              </div>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 5: SECURITY -->
+            <div id="step-5" class="step-content p-8 h-full">
+                <h2 class="text-2xl font-bold mb-4">
+                    5. Stockage : Où vont mes données ?
+                </h2>
+                <p class="text-slate-600 mb-6">
+                    Une fois la réponse générée, que devient votre prompt ?
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Public Mode -->
+                    <div class="border border-orange-200 rounded-xl p-5 bg-orange-50/50">
+                        <div class="flex items-center mb-3 text-orange-700">
+                            <i data-lucide="globe" class="mr-2 w-5 h-5"></i>
+                            <h3 class="font-bold">IA Publique / Gratuite</h3>
+                        </div>
+                        <ul class="text-sm space-y-3 text-slate-700 list-disc pl-5">
+                            <li><strong>Stockage :</strong> Conversions conservées par défaut.</li>
+                            <li><strong>Entraînement :</strong> Vos données servent à améliorer le modèle futur.</li>
+                            <li><strong>Risque :</strong> L'IA peut "apprendre" vos secrets et les répéter plus tard.</li>
+                        </ul>
+                        <div class="mt-4 bg-orange-100 text-orange-800 text-xs p-2 rounded text-center font-bold uppercase">
+                            Ne pas mettre de données sensibles
+                        </div>
+                    </div>
+
+                    <!-- Private Mode -->
+                    <div class="border border-indigo-200 rounded-xl p-5 bg-indigo-50/50">
+                        <div class="flex items-center mb-3 text-indigo-700">
+                            <i data-lucide="shield-check" class="mr-2 w-5 h-5"></i>
+                            <h3 class="font-bold">IA Entreprise / API Privée</h3>
+                        </div>
+                        <ul class="text-sm space-y-3 text-slate-700 list-disc pl-5">
+                            <li><strong>Éphémère :</strong> Données en RAM, effacées après réponse.</li>
+                            <li><strong>Zero Retention :</strong> Contrat juridique garantissant le non-apprentissage.</li>
+                            <li><strong>Isolement :</strong> Votre instance est étanche.</li>
+                        </ul>
+                         <div class="mt-4 bg-indigo-100 text-indigo-800 text-xs p-2 rounded text-center font-bold uppercase">
+                            Adapté au Service Public (avec contrat)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-      </div>
-    </div>
-  );
-};
+        <!-- Navigation Bar -->
+        <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 shadow-lg z-10">
+            <div class="max-w-5xl mx-auto flex items-center justify-between">
+                <button onclick="prevStep()" id="btn-prev" class="px-4 py-2 rounded-lg text-sm font-medium transition text-slate-600 hover:bg-slate-100">
+                    Précédent
+                </button>
+                
+                <div class="flex flex-col items-center w-1/2 md:w-2/3 mx-4">
+                    <span id="step-title" class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1 hidden md:block">
+                        Introduction
+                    </span>
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                        <div id="progress-bar" class="bg-indigo-600 h-full transition-all duration-500 ease-out" style="width: 0%"></div>
+                    </div>
+                </div>
 
-export default App;
+                <button onclick="nextStep()" id="btn-next" class="px-6 py-2 rounded-lg text-sm font-medium transition flex items-center bg-indigo-600 text-white hover:bg-indigo-700 shadow-md">
+                    Suivant <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Logic Script -->
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        // State
+        let currentStep = 0;
+        const totalSteps = 6; // 0 to 5
+        const stepTitles = [
+            "Introduction",
+            "1. L'Entrée (Prompt)",
+            "2. Le Filtre (Gardien)",
+            "3. La Tokenisation",
+            "4. Le Moteur (Mythe vs Réalité)",
+            "5. La Sécurité"
+        ];
+        
+        let userPrompt = "";
+
+        // Functions
+        function updateUI() {
+            // Hide all steps
+            document.querySelectorAll('.step-content').forEach(el => {
+                el.classList.remove('active');
+                el.classList.remove('animate-fade-in-up'); // Reset animation
+            });
+            
+            // Show current step with animation
+            const activeStep = document.getElementById(`step-${currentStep}`);
+            activeStep.classList.add('active');
+            void activeStep.offsetWidth; // Trigger reflow
+            activeStep.classList.add('animate-fade-in-up');
+
+            // Update Progress Bar
+            const progress = ((currentStep + 1) / totalSteps) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            
+            // Update Title
+            document.getElementById('step-title').innerText = stepTitles[currentStep];
+
+            // Update Buttons
+            const btnPrev = document.getElementById('btn-prev');
+            const btnNext = document.getElementById('btn-next');
+
+            btnPrev.disabled = currentStep === 0;
+            btnPrev.classList.toggle('opacity-50', currentStep === 0);
+            
+            if (currentStep === totalSteps - 1) {
+                btnNext.innerHTML = 'Terminé <i data-lucide="check" class="ml-2 w-4 h-4"></i>';
+                lucide.createIcons(); // Refresh icons
+            } else {
+                btnNext.innerHTML = 'Suivant <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>';
+                lucide.createIcons();
+            }
+
+            // Specific Step Logic
+            if (currentStep === 2) {
+                runFilterSimulation();
+            }
+            if (currentStep === 3) {
+                runTokenization();
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps - 1) {
+                // Save prompt from Step 1 if we are leaving it
+                if (currentStep === 1) {
+                    userPrompt = document.getElementById('user-input').value || "Aucun texte saisi";
+                }
+                currentStep++;
+                updateUI();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                updateUI();
+            }
+        }
+
+        function goToStep(step) {
+            currentStep = step;
+            updateUI();
+        }
+
+        function setPrompt(text) {
+            document.getElementById('user-input').value = text;
+        }
+
+        function runFilterSimulation() {
+            const display = document.getElementById('filter-input-display');
+            const scanResult = document.getElementById('scan-result');
+            
+            display.innerText = userPrompt;
+            
+            // Simple simulation
+            scanResult.className = "text-yellow-400 animate-pulse";
+            scanResult.innerText = "Analyse en cours...";
+            
+            setTimeout(() => {
+                const lowerPrompt = userPrompt.toLowerCase();
+                if (lowerPrompt.includes('bombe') || lowerPrompt.includes('arme') || lowerPrompt.includes('tuer')) {
+                    scanResult.className = "text-red-500 font-bold";
+                    scanResult.innerHTML = "<i data-lucide='shield-ban' class='inline w-4 h-4'></i> BLOQUÉ : Contenu dangereux détecté.";
+                    lucide.createIcons();
+                } else {
+                    scanResult.className = "text-green-500 font-bold";
+                    scanResult.innerHTML = "<i data-lucide='check-circle' class='inline w-4 h-4'></i> AUTORISÉ : Conforme aux règles.";
+                    lucide.createIcons();
+                }
+            }, 1500);
+        }
+
+        function runTokenization() {
+            const display = document.getElementById('token-input-display');
+            const container = document.getElementById('token-container');
+            
+            display.innerText = `"${userPrompt}"`;
+            container.innerHTML = ''; // Clear
+
+            const words = userPrompt.split(' ');
+            
+            words.forEach((word, index) => {
+                // Create visual token
+                const div = document.createElement('div');
+                div.className = 'flex flex-col items-center mx-1 mb-2 token-badge';
+                // Random delay for animation
+                div.style.animation = `fade-in-up 0.5s ease-out ${index * 0.1}s forwards`;
+                div.style.opacity = '0'; // Start hidden
+
+                const textSpan = document.createElement('span');
+                textSpan.className = 'bg-indigo-100 text-indigo-800 px-3 py-1 rounded-lg text-sm font-mono border border-indigo-200 shadow-sm';
+                textSpan.innerText = word;
+
+                const idSpan = document.createElement('span');
+                idSpan.className = 'text-xs text-slate-400 mt-1';
+                idSpan.innerText = Math.floor(Math.random() * 9000) + 1000; // Fake ID
+
+                div.appendChild(textSpan);
+                div.appendChild(idSpan);
+                container.appendChild(div);
+            });
+        }
+
+        // Initialize
+        updateUI();
+
+    </script>
+</body>
+</html>
