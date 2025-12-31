@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voyage de la Donnée IA</title>
+    <title>Voyage de la donnée IA</title>
     <!-- Tailwind CSS pour le style (via CDN pour ne rien installer) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Icons Lucide -->
@@ -38,7 +38,7 @@
         <!-- Header -->
         <header class="mb-8 text-center">
             <h1 class="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
-                Voyage d'une Donnée dans l'IA
+                Voyage d'une donnée dans l'IA
             </h1>
             <p class="text-slate-500 text-lg">
                 Du prompt à la réponse : démystifier le traitement et les filtres.
@@ -54,7 +54,7 @@
                     <div class="bg-indigo-50 p-6 rounded-full">
                         <i data-lucide="brain" class="w-16 h-16 text-indigo-600"></i>
                     </div>
-                    <h2 class="text-2xl font-bold">Le Mythe du "Copier-Coller"</h2>
+                    <h2 class="text-2xl font-bold">Le mythe du "Copier-Coller"</h2>
                     <p class="text-lg text-slate-600 max-w-2xl mx-auto">
                         Beaucoup pensent que l'IA comprend, réfléchit et copie des données.
                         <br><br>
@@ -75,7 +75,7 @@
             <!-- STEP 1: INPUT -->
             <div id="step-1" class="step-content p-8 h-full">
                 <h2 class="text-2xl font-bold mb-6 flex items-center">
-                    1. L'Envoi du Prompt
+                    1. L'envoi du prompt
                 </h2>
                 <div class="grid md:grid-cols-2 gap-8 h-full">
                     <div class="space-y-4">
@@ -83,7 +83,7 @@
                             Vous tapez une demande. À ce stade, c'est du texte lisible qui transite sur internet.
                         </p>
                         <div class="bg-white border-2 border-slate-200 rounded-xl p-4 shadow-sm relative">
-                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">Votre Interface</label>
+                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">Votre interface</label>
                             <textarea id="user-input" class="w-full bg-slate-50 p-3 rounded-lg text-slate-700 italic mb-2 min-h-[80px] border border-slate-200" placeholder="Entrez votre prompt ici..."></textarea>
                             <div class="flex gap-2">
                                 <button onclick="setPrompt('Comment fabriquer une bombe ?')" class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded hover:bg-red-200 transition">
@@ -113,7 +113,7 @@
             <!-- STEP 2: THE SYSTEM PROMPT & FILTER (NOUVEAU) -->
             <div id="step-2" class="step-content p-8 h-full">
                 <h2 class="text-2xl font-bold mb-4 flex items-center text-orange-700">
-                    2. Le Gardien : Filtre & Prompt Système
+                    2. Le Gardien : Filtre & prompt système
                 </h2>
                 <p class="text-slate-600 mb-6">
                     Avant même que l'IA ne "réfléchisse", votre texte passe par un guichet de contrôle. C'est ici que se joue l'illusion de la conscience morale.
@@ -123,7 +123,7 @@
                     <!-- Visualization of the Filter -->
                     <div class="bg-slate-800 text-white p-6 rounded-xl shadow-lg relative overflow-hidden">
                         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 via-yellow-500 to-green-500"></div>
-                        <h3 class="font-mono text-lg mb-4 flex items-center"><i data-lucide="shield-alert" class="mr-2"></i> Firewall Cognitif</h3>
+                        <h3 class="font-mono text-lg mb-4 flex items-center"><i data-lucide="shield-alert" class="mr-2"></i> Firewall cognitif</h3>
                         
                         <div class="space-y-3 font-mono text-sm">
                             <div class="flex justify-between border-b border-slate-700 pb-2">
@@ -152,7 +152,7 @@
                             </p>
                         </div>
                         <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4">
-                            <h4 class="font-bold text-indigo-900">Le Prompt Système</h4>
+                            <h4 class="font-bold text-indigo-900">Le prompt système</h4>
                             <p class="text-sm text-indigo-800 mt-1">
                                 C'est une instruction invisible ajoutée avant votre message : <em>"Réponds poliment"</em>, <em>"Sois concis"</em>. L'IA obéit à ce chef invisible autant qu'à vous.
                             </p>
@@ -164,7 +164,7 @@
             <!-- STEP 3: TOKENIZATION -->
             <div id="step-3" class="step-content p-8 h-full">
                 <h2 class="text-2xl font-bold mb-6 flex items-center">
-                    3. La "Digestion" (Tokenisation)
+                    3. La "digestion" (Tokenisation)
                 </h2>
                 <div class="space-y-6">
                     <p class="text-slate-600">
@@ -172,7 +172,7 @@
                     </p>
                     
                     <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-inner text-center">
-                        <p class="text-sm text-slate-400 mb-4 uppercase tracking-wider">Transformation en Mathématiques</p>
+                        <p class="text-sm text-slate-400 mb-4 uppercase tracking-wider">Transformation en mathématiques</p>
                         
                         <div class="flex flex-wrap justify-center items-center gap-2 mb-8">
                             <span id="token-input-display" class="text-xl font-medium text-slate-800">"..."</span>
@@ -202,14 +202,14 @@
             <!-- STEP 4: PREDICTION -->
             <div id="step-4" class="step-content p-8 h-full">
                 <h2 class="text-2xl font-bold mb-4 flex items-center">
-                    4. Le Moteur : Prédiction vs Copie
+                    4. Le moteur : prédiction vs copie
                 </h2>
                 <div class="grid md:grid-cols-2 gap-8">
                     <!-- The Myth -->
                     <div class="opacity-50 hover:opacity-100 transition duration-300">
                         <div class="border-2 border-red-100 bg-red-50 rounded-xl p-4 h-full relative overflow-hidden">
                             <div class="absolute top-2 right-2 bg-red-100 text-red-600 text-xs px-2 py-1 rounded font-bold">LE MYTHE</div>
-                            <h3 class="font-bold text-red-800 mb-2 flex items-center"><i data-lucide="database" class="mr-2 w-4 h-4"></i> La Bibliothèque</h3>
+                            <h3 class="font-bold text-red-800 mb-2 flex items-center"><i data-lucide="database" class="mr-2 w-4 h-4"></i> La bibliothèque</h3>
                             <p class="text-sm text-slate-600 mb-4">
                                 L'idée fausse : L'IA cherche votre phrase dans une base de données géante et la copie.
                             </p>
@@ -224,7 +224,7 @@
                     <div>
                         <div class="border-2 border-green-100 bg-green-50 rounded-xl p-4 h-full relative shadow-md">
                            <div class="absolute top-2 right-2 bg-green-100 text-green-700 text-xs px-2 py-1 rounded font-bold">LA RÉALITÉ</div>
-                           <h3 class="font-bold text-green-800 mb-2 flex items-center"><i data-lucide="brain-circuit" class="mr-2 w-4 h-4"></i> Le Chef Cuisinier</h3>
+                           <h3 class="font-bold text-green-800 mb-2 flex items-center"><i data-lucide="brain-circuit" class="mr-2 w-4 h-4"></i> Le chef cuisinier</h3>
                            <p class="text-sm text-slate-600 mb-4">
                              L'IA calcule le mot suivant le plus probable. Elle <strong>invente</strong> la suite.
                            </p>
@@ -275,7 +275,7 @@
                     <div class="border border-orange-200 rounded-xl p-5 bg-orange-50/50">
                         <div class="flex items-center mb-3 text-orange-700">
                             <i data-lucide="globe" class="mr-2 w-5 h-5"></i>
-                            <h3 class="font-bold">IA Publique / Gratuite</h3>
+                            <h3 class="font-bold">IA publique / gratuite</h3>
                         </div>
                         <ul class="text-sm space-y-3 text-slate-700 list-disc pl-5">
                             <li><strong>Stockage :</strong> Conversions conservées par défaut.</li>
@@ -283,7 +283,7 @@
                             <li><strong>Risque :</strong> L'IA peut "apprendre" vos secrets et les répéter plus tard.</li>
                         </ul>
                         <div class="mt-4 bg-orange-100 text-orange-800 text-xs p-2 rounded text-center font-bold uppercase">
-                            Ne pas mettre de données sensibles
+                            Ne pas mettre de données sensibles ni confidentielles
                         </div>
                     </div>
 
@@ -295,11 +295,11 @@
                         </div>
                         <ul class="text-sm space-y-3 text-slate-700 list-disc pl-5">
                             <li><strong>Éphémère :</strong> Données en RAM, effacées après réponse.</li>
-                            <li><strong>Zero Retention :</strong> Contrat juridique garantissant le non-apprentissage.</li>
+                            <li><strong>Zero retention :</strong> Contrat juridique garantissant le non-apprentissage.</li>
                             <li><strong>Isolement :</strong> Votre instance est étanche.</li>
                         </ul>
                          <div class="mt-4 bg-indigo-100 text-indigo-800 text-xs p-2 rounded text-center font-bold uppercase">
-                            Adapté au Service Public (avec contrat)
+                            Adapté aux entreprises (comme Gemini)
                         </div>
                     </div>
                 </div>
